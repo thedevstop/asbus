@@ -1,7 +1,7 @@
 asbus
 =====
 
-An easy to use Command and Query Bus.
+An easy to use Command and Query Bus library with basic event sourcing support.
 
 **Mediator**
 
@@ -153,6 +153,91 @@ var handler:IQueryHandler = factory.fromScope(GetUserQuery).resolve(IQueryHandle
 ```
 
 Asbus uses [asfac](https://github.com/thedevstop/asfac/ "asfac") for it's IoC container.
+
+***
+
+**Event Sourcing**
+
+Domain Events
+
+Unlike ActionScript events that notify anyone listening about changes in state. Domain events represent changes in state internal to an Aggregate.
+
+``` actionscript
+public class UserNameChanged extends DomainEvent
+{
+	public var newName:String;
+	
+	public function UserNameChanged(newName:String)
+	{
+		this.newName = newName;
+	}
+}
+```
+
+Event-sourced Aggregate
+
+Represents a domain model whose internal state is composed of Domain Events.
+
+``` actionscript
+public class User extends EventSourcedAggregate
+{
+	private var _id:String;
+	private var _name:String;
+	private var _passwordHash:String;
+
+	public function User()
+	{
+		// Register the events this Aggregate can process.
+		register(UserCreated, whenCreated);
+		register(UserNameChanged, whenNameChanged);
+		register(UserPasswordChanged, whenPasswordChanged);
+	}
+	
+	public function get id():String
+	{
+		return _id;
+	}
+	
+	public function get name():String
+	{
+		return _name;
+	}
+	
+	public function set name(newName:String):void
+	{
+		apply(new UserNameChanged(newName));
+	}
+	
+	public function validatePassword(attemptedPassword:String):Boolean
+	{
+		var attemptedPasswordHash:String = MD5.calculate(attemptedPassword);
+		return _passwordHash === attemptedPasswordHash;
+	}
+	
+	public function set password(newPassword:String):void
+	{
+		var newPasswordHash:String = MD5.calculate(newPassword);
+		apply(new UserPasswordChanged(newPasswordHash));
+	}
+	
+	private function whenCreated(event:UserCreated):void
+	{
+		_id = event.id;
+		_name = event.name;
+		_passwordHash = event.passwordHash;
+	}
+
+	private function whenNameChanged(event:UserNameChanged):void
+	{
+		_name = event.newName;
+	}
+	
+	private function whenPasswordChanged(event:UserPasswordChanged):void
+	{
+		_passwordHash = event.newPasswordHash;
+	}
+}
+```
 
 ***
 
