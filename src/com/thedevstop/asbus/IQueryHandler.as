@@ -4,6 +4,10 @@ package com.thedevstop.asbus
 	
 	public interface IQueryHandler 
 	{
+		/**
+		 * Handles the query.
+		 * @return	The promise of a result.
+		 */
 		function handler(query:Query):Promise
 	}
 }

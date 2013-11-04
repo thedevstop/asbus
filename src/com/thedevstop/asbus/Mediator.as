@@ -3,22 +3,27 @@ package com.thedevstop.asbus
 	import com.codecatalyst.promise.adapters.ErrorAdapter;
 	import com.codecatalyst.promise.Promise;
 	import com.thedevstop.asfac.AsFactory;
+	import com.thedevstop.asfac.FluentAsFactory;
 	
 	public class Mediator implements IMediator
 	{
-		private var _factory:AsFactory;
+		private var _factory:FluentAsFactory;
 		
-		public function Mediator(factory:AsFactory) 
+		public function Mediator(factory:FluentAsFactory) 
 		{
+			if (!factory)
+				throw new ArgumentError("factory cannot be null.");
+			
 			Promise.registerAdapter(ErrorAdapter.adapt);
 			
 			_factory = factory;
+			_factory.register(this).asType(IMediator);
 		}
 		
 		public function request(query:Query):Promise 
 		{
 			var response:Promise;
-			var handler:IQueryHandler = _factory.resolve(IQueryHandler, query);
+			var handler:IQueryHandler = _factory.fromScope(query).resolve(IQueryHandler);
 			try
 			{
 				response = handler.handle(query);
@@ -32,7 +37,7 @@ package com.thedevstop.asbus
 		
 		public function send(command:Command):void 
 		{
-			var handler:ICommandHandler = _factory.resolve(ICommandHandler, command);
+			var handler:ICommandHandler = _factory.fromScope(command).resolve(ICommandHandler);
 			handler.handle(command);
 		}
 	}

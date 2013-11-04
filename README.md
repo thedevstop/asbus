@@ -39,15 +39,30 @@ Commands are simple value objects that carry the state needed by the CommandHand
 ``` actionscript
 public class RegisterUserCommand extends Command
 {
-	public var id:String;
-	public var name:String;
-	public var passwordHash:String;
+	private var _id:String;
+	private var _name:String;
+	private var _passwordHash:String;
 
 	public function RegisterUserCommand(id:String, name:String, passwordHash:String)
 	{
-		this.id = id;
-		this.name = name;
-		this.passwordHash = passwordHash;
+		this._id = id;
+		this._name = name;
+		this._passwordHash = passwordHash;
+	}
+	
+	public function get id():String
+	{
+		return this._id;
+	}
+	
+	public function get name():String
+	{
+		return this._name;
+	}
+	
+	public function get passwordHash():String
+	{
+		return this._passwordHash;
 	}
 }
 ```
@@ -84,11 +99,16 @@ Queries are simple value objects that carry the state needed by the QueryHandler
 ``` actionscript
 public class GetUserQuery extends Query
 {
-	public var id:String;
+	private var _id:String;
 
 	public function GetUserQuery(id:String)
 	{
-		this.id = id;
+		this._id = id;
+	}
+	
+	public function get id():String
+	{
+		return this._id;
 	}
 }
 ```
