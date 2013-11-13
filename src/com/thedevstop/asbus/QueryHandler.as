@@ -19,7 +19,7 @@ package com.thedevstop.asbus
 			this._queryType = queryType;
 		}
 		
-		public function handle(query:Query):Query
+		public function handle(query:Query):Promise
 		{
 			validateQuery(query);
 			

@@ -8,6 +8,6 @@ package com.thedevstop.asbus
 		 * Handles the query.
 		 * @return	The promise of a result.
 		 */
-		function handler(query:Query):Promise
+		function handle(query:Query):Promise
 	}
 }

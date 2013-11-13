@@ -30,7 +30,7 @@ package com.thedevstop.asbus
 		protected function handleCommand(command:*):void
 		{
 			var handlerClassName:String = getQualifiedClassName((this as Object).constructor);
-			return Promise.when(new Error("handleCommand not overridden in handler class " + handlerClassName));
+			throw new Error("handleCommand not overridden in handler class " + handlerClassName);
 		}
 		
 		/**
