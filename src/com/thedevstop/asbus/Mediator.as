@@ -4,8 +4,9 @@ package com.thedevstop.asbus
 	import com.codecatalyst.promise.Promise;
 	import com.thedevstop.asfac.AsFactory;
 	import com.thedevstop.asfac.FluentAsFactory;
+	import flash.events.EventDispatcher;
 	
-	public class Mediator implements IMediator
+	public class Mediator extends EventDispatcher implements IMediator, ICommandBus, IQueryBus, IEventBus
 	{
 		private var _factory:FluentAsFactory;
 		
@@ -18,6 +19,9 @@ package com.thedevstop.asbus
 			
 			_factory = factory;
 			_factory.register(this).asType(IMediator);
+			_factory.register(this).asType(ICommandBus);
+			_factory.register(this).asType(IQueryBus);
+			_factory.register(this).asType(IEventBus);
 		}
 		
 		public function request(query:Query):Promise 

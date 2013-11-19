@@ -1,21 +1,9 @@
 package com.thedevstop.asbus 
 {
-	import com.codecatalyst.promise.Promise;
 	import flash.events.Event;
 	
-	public interface IMediator
+	public interface IEventBus 
 	{
-		/**
-		 * Sends the command to be acted upon.
-		 */
-		function send(command:Command):void
-		
-		/**
-		 * Requests a result for the query.
-		 * @return	The promise of a result.
-		 */
-		function request(query:Query):Promise
-		
 		/**
 		 * Adds a listener for a type of event.
 		 */
