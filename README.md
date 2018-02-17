@@ -128,7 +128,7 @@ public class GetUserHandler extends QueryHandler
 		_userRepository = userRepository;
 	}
 
-	protected override function handleQuery(query:*):void
+	protected override function handleQuery(query:*):Promise
 	{
 		var user:GetUserQuery = query;
 		return Promise.when(_userRepository.get(user.id));
